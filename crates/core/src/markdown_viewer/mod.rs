@@ -52,6 +52,7 @@ pub fn md_to_ansi(
         image_preprocessor,
         show_frontmatter: config.header,
         syntax_map: config.syntax_map.clone(),
+        md_href_render: config.md_href_render,
 
         blockquote_fenced_offset: None,
         collecting_depth: 0,

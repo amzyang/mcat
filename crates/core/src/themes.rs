@@ -71,6 +71,7 @@ impl From<&config::Theme> for CustomTheme {
         match s {
             config::Theme::Auto => CustomTheme::github(),
             config::Theme::Catppuccin => CustomTheme::catppuccin(),
+            config::Theme::CatppuccinLatte => CustomTheme::catppuccin_latte(),
             config::Theme::Nord => CustomTheme::nord(),
             config::Theme::Monokai => CustomTheme::monokai(),
             config::Theme::Dracula => CustomTheme::dracula(),
@@ -330,6 +331,32 @@ impl CustomTheme {
             yellow: "#F9E2AF".into(),
             white: "#CDD6F4".into(),
             black: "#1E1E2E".into(),
+        }
+    }
+
+    pub fn catppuccin_latte() -> Self {
+        CustomTheme {
+            keyword: "#8839ef".into(),
+            keyword_bg: "#e6e9ef".into(),
+            function: "#1e66f5".into(),
+            string: "#40a02b".into(),
+            module: "#04a5e5".into(),
+            constant: "#d20f39".into(),
+            comment: "#9ca0b0".into(),
+            foreground: "#4c4f69".into(),
+            guide: "#ccd0da".into(),
+            background: "#eff1f5".into(),
+            surface: "#e6e9ef".into(),
+            border: "#acb0be".into(),
+
+            red: "#d20f39".into(),
+            green: "#40a02b".into(),
+            blue: "#1e66f5".into(),
+            cyan: "#04a5e5".into(),
+            magenta: "#8839ef".into(),
+            yellow: "#df8e1d".into(),
+            white: "#4c4f69".into(),
+            black: "#eff1f5".into(),
         }
     }
 

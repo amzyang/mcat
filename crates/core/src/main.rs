@@ -99,7 +99,7 @@ fn main() -> Result<()> {
     let mut files: Vec<McatFile> = Vec::new();
 
     // if stdin is streamed into
-    if stdin_streamed && config.input.is_empty() {
+    if stdin_streamed && config.input.is_empty() && !config.no_stdin {
         let mut buffer = Vec::new();
         std::io::stdin().read_to_end(&mut buffer)?;
 

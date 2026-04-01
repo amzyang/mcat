@@ -164,6 +164,12 @@ pub struct McatConfig {
     )]
     pub syntax_map: Vec<(String, String)>,
 
+    /// Control markdown link rendering
+    #[arg(long = "md-href", value_name = "mode", help_heading = "Markdown Viewing",
+        default_value_t = MdHrefRender::Auto,
+        env = "MCAT_MD_HREF")]
+    pub md_href_render: MdHrefRender,
+
     /// Shortcut for --md-image none
     #[arg(short = 'f', help_heading = "Markdown Viewing")]
     fast: bool,
@@ -421,6 +427,14 @@ pub struct McatConfig {
     #[arg(skip)]
     pub inline_images_in_md: bool,
 
+    /// Ignore stdin input even if piped
+    #[arg(long = "no-stdin", help_heading = "Core Options", env = "MCAT_IGNORE_STDIN")]
+    pub no_stdin: bool,
+
+    /// Hide filename headers and separators
+    #[arg(long = "no-filename", help_heading = "Core Options")]
+    pub no_filename: bool,
+
     #[arg(skip)]
     pub bar: Option<MultiBar>,
 }
@@ -508,6 +522,7 @@ pub enum Theme {
     #[default]
     Auto,
     Catppuccin,
+    CatppuccinLatte,
     Nord,
     Monokai,
     Dracula,
@@ -637,4 +652,18 @@ fn parse_syntax_map(s: &str) -> Result<(String, String), String> {
     }
 
     Ok((ext, syn))
+}
+
+#[derive(ValueEnum, Clone, Default, Copy, PartialEq, Debug)]
+pub enum MdHrefRender {
+    Always,
+    None,
+    #[default]
+    Auto,
+}
+
+impl std::fmt::Display for MdHrefRender {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        self.to_possible_value().unwrap().get_name().fmt(f)
+    }
 }

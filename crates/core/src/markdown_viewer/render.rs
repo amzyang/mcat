@@ -10,6 +10,7 @@ use strip_ansi_escapes::strip_str;
 use syntect::parsing::SyntaxSet;
 
 use crate::{
+    config::MdHrefRender,
     markdown_viewer::utils::{
         extract_span_color, prettify_latex, string_len, to_superscript, trim_ansi_string,
         wrap_lines,
@@ -47,6 +48,7 @@ pub struct AnsiContext {
     pub center: bool,
     pub image_preprocessor: ImagePreprocessor,
     pub syntax_map: Vec<(String, String)>,
+    pub md_href_render: MdHrefRender,
 
     pub blockquote_fenced_offset: Option<usize>,
     pub collecting_depth: usize,
@@ -833,6 +835,21 @@ fn render_link<'a>(node: &'a AstNode<'a>, ctx: &mut AnsiContext) -> String {
     let cyan = &ctx.theme.cyan.fg;
     let start = format!("{UNDERLINE}{cyan}");
     let content = content.replace(RESET, &format!("{RESET}{start}"));
+
+    if ctx.md_href_render == MdHrefRender::None {
+        let gray = &ctx.theme.comment.fg;
+        return content
+            .lines()
+            .enumerate()
+            .map(|(i, line)| {
+                if i == 0 {
+                    format!("{start}\u{f0339} {line}{RESET}({gray}{url}{RESET})")
+                } else {
+                    format!("  {start}{line}{RESET}")
+                }
+            })
+            .join("\n");
+    }
     let osc8_start = format!("\x1b]8;;{}\x1b\\", url);
     let osc8_end = "\x1b]8;;\x1b\\";
     content
